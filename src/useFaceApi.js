@@ -11,7 +11,7 @@ export const useFaceApi = () => {
   useEffect(() => {
     const loadModels = async () => {
       // Stable URL for models
-      const MODEL_URL = 'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@0.22.2/weights';
+      const MODEL_URL = '/models';
         
       try {
         setLoadingStatus("Loading Detector...");

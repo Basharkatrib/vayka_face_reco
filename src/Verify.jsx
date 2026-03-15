@@ -14,8 +14,11 @@ const Verify = ({ hotel, token }) => {
   }, [loadingStatus]);
 
   useEffect(() => {
+    startVideo();
+  }, []);
+
+  useEffect(() => {
     if (modelsLoaded) {
-      startVideo();
       setStatus({ type: 'info', msg: 'System ready' });
     }
   }, [modelsLoaded]);
