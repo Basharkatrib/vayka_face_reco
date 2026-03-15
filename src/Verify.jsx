@@ -4,10 +4,14 @@ import api from './api';
 import { ShieldCheck, UserCheck, Search, CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 
 const Verify = ({ hotel, token }) => {
-  const { modelsLoaded, cameraReady, videoRef, startVideo, captureDescriptor } = useFaceApi();
+  const { loadingStatus, modelsLoaded, cameraReady, videoRef, startVideo, captureDescriptor } = useFaceApi();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [status, setStatus] = useState({ type: 'info', msg: 'Initializing...' });
+
+  useEffect(() => {
+    setStatus({ type: 'info', msg: loadingStatus });
+  }, [loadingStatus]);
 
   useEffect(() => {
     if (modelsLoaded) {
@@ -46,7 +50,7 @@ const Verify = ({ hotel, token }) => {
           {!cameraReady && (
             <div className="camera-placeholder">
               <Loader2 className="animate-spin" size={32} color="#6366f1" />
-              <span>Connecting camera...</span>
+              <span>{loadingStatus}...</span>
             </div>
           )}
 

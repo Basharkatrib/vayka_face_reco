@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import * as faceapi from 'face-api.js';
 
 export const useFaceApi = () => {
+  const [loadingStatus, setLoadingStatus] = useState("Initializing...");
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [cameraReady, setCameraReady] = useState(false);
   const videoRef = useRef(null);
@@ -9,17 +10,25 @@ export const useFaceApi = () => {
 
   useEffect(() => {
     const loadModels = async () => {
-      const MODEL_URL = import.meta.env.DEV
-        ? '/models'
-        : 'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights';
+      // Stable URL for models
+      const MODEL_URL = import.meta.env.DEV 
+        ? '/models' 
+        : 'https://justadudewhohacks.github.io/face-api.js/weights';
+        
       try {
-        await Promise.all([
-          faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
-          faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-          faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-        ]);
+        setLoadingStatus("Loading Detector...");
+        await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+        
+        setLoadingStatus("Loading Landmarks...");
+        await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+        
+        setLoadingStatus("Loading Recognition...");
+        await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+        
+        setLoadingStatus("Ready");
         setModelsLoaded(true);
       } catch (err) {
+        setLoadingStatus("Error loading models");
         console.error("Model loading error:", err);
       }
     };
@@ -57,5 +66,5 @@ export const useFaceApi = () => {
     return detection ? Array.from(detection.descriptor) : null;
   };
 
-  return { modelsLoaded, cameraReady, videoRef, startVideo, captureDescriptor };
+  return { loadingStatus, modelsLoaded, cameraReady, videoRef, startVideo, captureDescriptor };
 };
