@@ -13,7 +13,7 @@ export const useFaceApi = () => {
       // Stable URL for models
       const MODEL_URL = import.meta.env.DEV 
         ? '/models' 
-        : 'https://justadudewhohacks.github.io/face-api.js/weights';
+        : 'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@0.22.2/weights';
         
       try {
         setLoadingStatus("Loading Detector...");
