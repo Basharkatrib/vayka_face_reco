@@ -11,7 +11,7 @@ export const useFaceApi = () => {
     const loadModels = async () => {
       const MODEL_URL = import.meta.env.DEV
         ? '/models'
-        : 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
+        : 'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights';
       try {
         await Promise.all([
           faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
