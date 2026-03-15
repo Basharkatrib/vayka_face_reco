@@ -9,7 +9,9 @@ export const useFaceApi = () => {
 
   useEffect(() => {
     const loadModels = async () => {
-      const MODEL_URL = 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights';
+      const MODEL_URL = import.meta.env.DEV
+        ? '/models'
+        : 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
       try {
         await Promise.all([
           faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
