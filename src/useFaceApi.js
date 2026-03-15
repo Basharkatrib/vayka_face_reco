@@ -11,13 +11,11 @@ export const useFaceApi = () => {
   useEffect(() => {
     const loadModels = async () => {
       // Stable URL for models
-      const MODEL_URL = import.meta.env.DEV 
-        ? '/models' 
-        : 'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@0.22.2/weights';
+      const MODEL_URL = 'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@0.22.2/weights';
         
       try {
         setLoadingStatus("Loading Detector...");
-        await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+        await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
         
         setLoadingStatus("Loading Landmarks...");
         await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
@@ -60,7 +58,7 @@ export const useFaceApi = () => {
   const captureDescriptor = async () => {
     if (!videoRef.current) return null;
     const detection = await faceapi
-      .detectSingleFace(videoRef.current)
+      .detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions())
       .withFaceLandmarks()
       .withFaceDescriptor();
     return detection ? Array.from(detection.descriptor) : null;
