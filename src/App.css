@@ -240,7 +240,6 @@ select.premium-input {
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--border);
-  aspect-ratio: 4/3;
 }
 
 .video-container video {
@@ -387,7 +386,6 @@ select.premium-input {
 
   /* Video takes full width, shorter aspect */
   .video-container {
-    aspect-ratio: 16/12;
     border-radius: 12px;
   }
 
@@ -437,7 +435,6 @@ select.premium-input {
   }
 
   .video-container {
-    aspect-ratio: 1/1;
     border-radius: 10px;
   }
 

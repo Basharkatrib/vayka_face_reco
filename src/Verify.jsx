@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useFaceApi } from './useFaceApi';
 import api from './api';
+import './FaceScanner.css';
 import { ShieldCheck, UserCheck, Search, CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 
 const Verify = ({ hotel, token }) => {
@@ -47,7 +48,7 @@ const Verify = ({ hotel, token }) => {
   return (
     <div className="scanner-grid">
       <div>
-        <div className="video-container" style={{aspectRatio:"5/3"}}>
+        <div className="video-container" >
           <video ref={videoRef} autoPlay muted playsInline className={!cameraReady ? 'hidden-video' : ''} />
           
           {!cameraReady && (

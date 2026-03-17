@@ -176,3 +176,22 @@ video {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+
+.video-container {
+  aspect-ratio: 5/3 ;
+}
+
+@media (max-width: 768px) {
+  .video-container {
+    aspect-ratio: 4/5;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-container {
+    aspect-ratio: 3/4; 
+  }
+}
+
+
