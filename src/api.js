@@ -64,6 +64,21 @@ const api = {
         const data = await response.json();
         if (!response.ok) throw new Error(data.message || 'Face registration failed');
         return data;
+    },
+
+    async verifyQRCode(hotelId, qrToken, token) {
+        const response = await fetch(`${API_URL}/qr/verify`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json', 
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ hotel_id: hotelId, qr_token: qrToken })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.errors?.[0] || 'Invalid QR code');
+        return data.data;
     }
 };
 

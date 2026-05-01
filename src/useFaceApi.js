@@ -55,14 +55,27 @@ export const useFaceApi = () => {
     }
   };
 
-  const captureDescriptor = async () => {
-    if (!videoRef.current) return null;
-    const detection = await faceapi
-      .detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions())
-      .withFaceLandmarks()
-      .withFaceDescriptor();
-    return detection ? Array.from(detection.descriptor) : null;
+  const stopVideo = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(t => t.stop());
+      streamRef.current = null;
+      setCameraReady(false);
+    }
   };
 
-  return { loadingStatus, modelsLoaded, cameraReady, videoRef, startVideo, captureDescriptor };
+  const captureDescriptor = async () => {
+    if (!videoRef.current) return null;
+    try {
+        const detection = await faceapi
+        .detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceDescriptor();
+        return detection ? Array.from(detection.descriptor) : null;
+    } catch (err) {
+        console.error("Capture error:", err);
+        return null;
+    }
+  };
+
+  return { loadingStatus, modelsLoaded, cameraReady, videoRef, startVideo, stopVideo, captureDescriptor };
 };
