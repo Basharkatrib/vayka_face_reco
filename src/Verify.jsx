@@ -313,7 +313,7 @@ const Verify = ({ hotel, token }) => {
           <div className={`verification-status-v2 ${status.type}`}>
             <div className="pulse-indicator"></div>
             <div className="flex flex-col">
-              <span className="status-label">System Status</span>
+              <span className="status-label">System Status </span>
               <span className="status-value">{status.msg}</span>
             </div>
           </div>

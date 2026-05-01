@@ -66,7 +66,7 @@ function AppContent() {
                     <div className="menu-brand">
                         <ShieldCheck color="var(--primary)" size={24} />
                         <div className="flex flex-col">
-                            <span className="text-sm font-black tracking-tighter">VAYKA SECURE</span>
+                            <span className="text-sm font-black tracking-tighter">VAYKA SECURE </span>
                             <span className="text-[10px] opacity-50 uppercase">{selectedHotel.name}</span>
                         </div>
                     </div>
