@@ -4,13 +4,15 @@ import Login from './Login'
 import HotelSelect from './HotelSelect'
 import Verify from './Verify'
 import Register from './Register'
-import { LogOut, ShieldCheck, UserPlus, Home } from 'lucide-react'
+import Home from './Home'
+import { LogOut, ShieldCheck, UserPlus, Menu, X, Settings, LayoutDashboard } from 'lucide-react'
 import './App.css'
 
 function AppContent() {
   const [user, setUser] = useState(null);
   const [selectedHotel, setSelectedHotel] = useState(null);
   const [initialized, setInitialized] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -39,49 +41,71 @@ function AppContent() {
     localStorage.clear();
     setUser(null);
     setSelectedHotel(null);
+    setIsMenuOpen(false);
   };
 
   if (!initialized) return null;
 
+  const isAuth = user && selectedHotel;
+
   return (
-    <>
-       {user && selectedHotel && (
-         <nav className="navbar">
-            <div className="nav-brand">
-                <div className="nav-logo">
-                    <ShieldCheck color="white" size={18} />
-                </div>
-                <div className="nav-brand-text">
-                   <div style={{ fontWeight: '800', fontSize: '0.85rem', color: 'white', letterSpacing: '0.04em' }}>VAYKA</div>
-                   <div style={{ fontSize: '0.6rem', color: 'var(--text-muted)', fontWeight: '500', maxWidth: '120px', whiteSpace: 'nowrap' }}>{selectedHotel.name}</div>
-                </div>
-            </div>
-
-            <div className="nav-links">
-                <Link to="/verify" className={`nav-link ${location.pathname === '/verify' ? 'active' : ''}`}>
-                    <Home size={14} /> <span className="link-text">Monitor</span>
-                </Link>
-                <Link to="/register" className={`nav-link ${location.pathname === '/register' ? 'active' : ''}`}>
-                    <UserPlus size={14} /> <span className="link-text">Register</span>
-                </Link>
-            </div>
-
-            <button onClick={handleLogout} className="nav-logout">
-                <LogOut size={14} /> <span>Exit</span>
+    <div className="app-main-container">
+       {isAuth && (
+         <>
+            {/* Floating Menu Button */}
+            <button className={`floating-menu-btn ${isMenuOpen ? 'active' : ''}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-         </nav>
+
+            {/* Backdrop */}
+            {isMenuOpen && <div className="menu-backdrop" onClick={() => setIsMenuOpen(false)}></div>}
+
+            {/* Floating Navigation Menu */}
+            <div className={`floating-nav-panel ${isMenuOpen ? 'open' : ''}`}>
+                <div className="menu-header">
+                    <div className="menu-brand">
+                        <ShieldCheck color="var(--primary)" size={24} />
+                        <div className="flex flex-col">
+                            <span className="text-sm font-black tracking-tighter">VAYKA SECURE</span>
+                            <span className="text-[10px] opacity-50 uppercase">{selectedHotel.name}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="menu-items">
+                    <Link to="/verify" className={`menu-item-link ${location.pathname === '/verify' ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>
+                        <div className="item-icon"><LayoutDashboard size={20} /></div>
+                        <span>Security Monitor</span>
+                    </Link>
+                    <Link to="/register" className={`menu-item-link ${location.pathname === '/register' ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}>
+                        <div className="item-icon"><UserPlus size={20} /></div>
+                        <span>Guest Registration</span>
+                    </Link>
+                    <div className="menu-divider"></div>
+                    <button onClick={handleLogout} className="menu-item-link logout">
+                        <div className="item-icon"><LogOut size={20} /></div>
+                        <span>Exit System</span>
+                    </button>
+                </div>
+
+                <div className="menu-footer">
+                    <span className="text-[9px] opacity-30 uppercase tracking-widest font-bold">Biometric v2.0.4</span>
+                </div>
+            </div>
+         </>
        )}
 
-       <div className={user && selectedHotel ? 'page-content' : ''}>
+       <main className={isAuth ? 'app-viewport' : ''}>
          <Routes>
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/select" />} />
             <Route path="/select" element={user ? (!selectedHotel ? <HotelSelect token={user.access_token} onSelect={handleHotelSelect} /> : <Navigate to="/verify" />) : <Navigate to="/login" />} />
             <Route path="/verify" element={user && selectedHotel ? <Verify hotel={selectedHotel} token={user.access_token} /> : <Navigate to="/login" />} />
             <Route path="/register" element={user && selectedHotel ? <Register hotel={selectedHotel} token={user.access_token} /> : <Navigate to="/login" />} />
-            <Route path="/" element={<Navigate to={user ? (selectedHotel ? "/verify" : "/select") : "/login"} />} />
+            <Route path="*" element={<Navigate to="/" />} />
          </Routes>
-       </div>
-    </>
+       </main>
+    </div>
   )
 }
 

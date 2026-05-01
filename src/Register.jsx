@@ -72,29 +72,29 @@ const Register = ({ hotel, token }) => {
   if (!isAdminAuth) {
     return (
       <div className="auth-container">
-        <div className="premium-card" style={{ maxWidth: '380px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
-            <div style={{ background: 'rgba(99,102,241,0.08)', width: '48px', height: '48px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
-              <ShieldAlert size={24} color="#6366f1" />
+        <div className="premium-card-compact">
+          <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
+            <div style={{ background: 'rgba(99,102,241,0.08)', width: '40px', height: '40px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 0.75rem' }}>
+              <ShieldAlert size={20} color="#6366f1" />
             </div>
-            <h2 className="title-gradient" style={{ fontSize: '1.35rem' }}>Staff Authorization</h2>
-            <p style={{ fontSize: '0.8rem' }}>Verify your identity to proceed.</p>
+            <h2 className="title-gradient" style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>Staff Authorization</h2>
+            <p style={{ fontSize: '0.75rem' }}>Verify identity to proceed.</p>
           </div>
 
           {status.type === 'error' && (
-            <div className="badge-error" style={{ marginBottom: '1rem' }}>{status.msg}</div>
+            <div className="badge-error" style={{ marginBottom: '0.8rem', padding: '0.5rem', fontSize: '0.7rem' }}>{status.msg}</div>
           )}
 
           <form onSubmit={handleAdminAuth}>
-            <div className="form-group">
-              <label><Mail size={12} /> Email</label>
-              <input type="email" className="premium-input" value={adminEmail} onChange={e => setAdminEmail(e.target.value)} required />
+            <div className="form-group-compact">
+              <label><Mail size={11} /> Email</label>
+              <input type="email" className="premium-input-compact" value={adminEmail} onChange={e => setAdminEmail(e.target.value)} required />
             </div>
-            <div className="form-group">
-              <label><Lock size={12} /> Password</label>
-              <input type="password" className="premium-input" value={adminPass} onChange={e => setAdminPass(e.target.value)} required />
+            <div className="form-group-compact">
+              <label><Lock size={11} /> Password</label>
+              <input type="password" className="premium-input-compact" value={adminPass} onChange={e => setAdminPass(e.target.value)} required />
             </div>
-            <button type="submit" className="btn btn-primary" disabled={loading}>
+            <button type="submit" className="btn btn-primary" style={{ marginTop: '0.5rem' }} disabled={loading}>
               {loading ? 'Verifying...' : 'Authorize'}
             </button>
           </form>
@@ -105,65 +105,81 @@ const Register = ({ hotel, token }) => {
 
   // --- MAIN REGISTRATION UI ---
   return (
-    <div className="scanner-grid">
-      <div>
-        <div className="video-container">
+    <div className="scanner-grid-wide">
+      <div className="camera-section">
+        <div className="video-container-wide">
           <video ref={videoRef} autoPlay muted playsInline className={!cameraReady ? 'hidden-video' : ''} />
           
           {!cameraReady && (
             <div className="camera-placeholder">
               <Loader2 className="animate-spin" size={32} color="#6366f1" />
-              <span>Connecting camera...</span>
+              <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>Initializing Biometrics...</span>
             </div>
           )}
 
           <div className="scanner-overlay">
-            {loading && <div className="scan-line"></div>}
-            {/* Status at BOTTOM */}
-            <div className="verification-status" style={{ borderLeft: `3px solid ${status.type === 'success' ? '#10b981' : status.type === 'error' ? '#f43f5e' : '#6366f1'}` }}>
-              {status.type === 'success' ? <CheckCircle2 size={16} color="#10b981" /> : <AlertCircle size={16} color="#6366f1" />}
-              <div>
-                <div style={{ fontWeight: '600', fontSize: '0.72rem', color: 'white' }}>Status</div>
-                <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{status.msg}</div>
+            {loading && <div className="scan-line-v2"></div>}
+            <div className="corner-decor top-left"></div>
+            <div className="corner-decor top-right"></div>
+            <div className="corner-decor bottom-left"></div>
+            <div className="corner-decor bottom-right"></div>
+            
+            <div className="verification-status-v2" style={{ bottom: '15px', left: '15px', right: 'auto', maxWidth: '250px' }}>
+              <div className={status.type === 'loading' ? 'pulse-indicator' : ''}>
+                {status.type === 'success' ? <CheckCircle2 size={16} color="#10b981" /> : <AlertCircle size={16} color="#6366f1" />}
+              </div>
+              <div className="flex flex-col">
+                <span className="status-label">System Status</span>
+                <span className="status-value" style={{ fontSize: '0.75rem' }}>{status.msg}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="side-card">
-        <div className="auth-notice">
-          <ShieldAlert size={13} />
-          <span>Session Active</span>
+      <div className="side-card-compact">
+        <div className="auth-notice-v2">
+          <ShieldAlert size={12} />
+          <span>Secured Session</span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem' }}>
-          <UserPlus color="var(--primary)" size={20} />
-          <h3 style={{ margin: 0, fontSize: '0.95rem' }}>Guest Onboarding</h3>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.75rem' }}>
+          <div className="icon-badge-small">
+            <UserPlus color="var(--primary)" size={16} />
+          </div>
+          <h3 style={{ margin: 0, fontSize: '0.9rem' }}>Guest Onboarding</h3>
         </div>
 
-        <p style={{ marginBottom: '1rem', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-          Select a guest and capture their biometric.
+        <p style={{ marginBottom: '1rem', fontSize: '0.7rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
+          Assign biometric signature to a guest booking.
         </p>
 
-        <div className="form-group">
-          <label>Booking</label>
+        <div className="form-group-compact">
+          <label style={{ fontSize: '0.65rem' }}>Select Booking</label>
           <div style={{ display: 'flex', gap: '0.35rem' }}>
-            <select className="premium-input" value={selectedBooking} onChange={(e) => setSelectedBooking(e.target.value)}>
+            <select className="premium-input-compact" value={selectedBooking} onChange={(e) => setSelectedBooking(e.target.value)}>
               <option value="">Choose guest...</option>
               {bookings.map(b => (
                 <option key={b.id} value={b.id}>{b.guest_name} ({b.room?.name})</option>
               ))}
             </select>
-            <button className="btn" style={{ width: 'auto', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', padding: '0 0.6rem' }} onClick={fetchBookings}>
-              <RefreshCw size={14} color="var(--text-muted)" />
+            <button className="btn" style={{ width: 'auto', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', padding: '0 0.5rem' }} onClick={fetchBookings}>
+              <RefreshCw size={12} color="var(--text-muted)" />
             </button>
           </div>
         </div>
 
-        <button className="btn btn-primary" onClick={handleRegister} disabled={loading || !cameraReady}>
-          <Camera size={15} /> {loading ? 'Processing...' : 'Capture & Save'}
+        <button className="btn btn-primary" style={{ padding: '0.8rem' }} onClick={handleRegister} disabled={loading || !cameraReady}>
+          <Camera size={14} /> {loading ? 'Processing...' : 'Capture & Save'}
         </button>
+
+        <div className="guidelines-mini">
+          <span className="text-[10px] uppercase opacity-40 font-bold tracking-widest">Biometric Guide</span>
+          <ul className="mt-2 text-[10px] text-gray-500 pl-4 list-disc space-y-1">
+            <li>Ensure neutral lighting</li>
+            <li>Face directly forward</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

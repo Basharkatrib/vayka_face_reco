@@ -27,87 +27,347 @@ body {
 
 #root { width: 100%; }
 
-/* ========== NAVBAR ========== */
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.6rem 1.5rem;
-  background: rgba(8, 12, 20, 0.9);
+/* ========== NEW APP LAYOUT (FULL SCREEN) ========== */
+.app-main-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-viewport {
+  width: 100%;
+  height: 100%;
+}
+
+/* ========== FLOATING MENU BUTTON ========== */
+.floating-menu-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: rgba(8, 12, 20, 0.6);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-}
-
-.nav-brand {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.nav-logo {
-  background: linear-gradient(135deg, var(--primary), #4f46e5);
-  padding: 0.4rem;
-  border-radius: 10px;
+.floating-menu-btn:hover {
+  transform: scale(1.05);
+  background: rgba(8, 12, 20, 0.8);
+  border-color: var(--primary);
+}
+
+.floating-menu-btn.active {
+  background: var(--primary);
+  border-color: transparent;
+  transform: rotate(90deg);
+}
+
+/* ========== MENU BACKDROP ========== */
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 900;
+  animation: fadeIn 0.3s ease;
+}
+
+/* ========== FLOATING NAV PANEL ========== */
+.floating-nav-panel {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  bottom: 20px;
+  width: 320px;
+  background: rgba(13, 17, 28, 0.95);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  z-index: 950;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  transform: translateX(400px);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
+}
+
+.floating-nav-panel.open {
+  transform: translateX(0);
+}
+
+.menu-header {
+  margin-bottom: 40px;
+}
+
+.menu-brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.menu-item-link {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.menu-item-link:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.menu-item-link.active {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--primary);
+  border-left: 4px solid var(--primary);
+}
+
+.menu-item-link.logout {
+  color: #f43f5e;
+  margin-top: auto;
+}
+
+.menu-item-link.logout:hover {
+  background: rgba(244, 63, 94, 0.1);
+}
+
+.item-icon {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.nav-links {
-  display: flex;
-  gap: 0.25rem;
-  background: rgba(255,255,255,0.04);
-  padding: 0.25rem;
-  border-radius: 10px;
-  border: 1px solid var(--border);
+.menu-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 10px 0;
 }
 
-.nav-link {
+.menu-footer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .floating-nav-panel {
+    top: 0; right: 0; bottom: 0;
+    width: 100%;
+    border-radius: 0;
+    padding: 60px 30px;
+  }
+}
+
+/* ========== LANDING PAGE (HOME) ========== */
+.landing-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: var(--bg);
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.landing-content {
+  position: relative;
+  z-index: 10;
+  max-width: 600px;
+  text-align: center;
+  animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logo-section {
+  margin-bottom: 2.5rem;
+}
+
+.landing-logo {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.logo-glow {
+  position: absolute;
+  inset: -20px;
+  background: var(--primary);
+  filter: blur(40px);
+  opacity: 0.2;
+  border-radius: 50%;
+  z-index: -1;
+  animation: pulseGlow 4s infinite;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(1.2); opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0.2; }
+}
+
+.landing-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.description-section {
+  margin-bottom: 3rem;
+}
+
+.landing-subtitle {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+}
+
+.feature-badges {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.feature-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.landing-text {
+  font-size: 1rem;
   color: var(--text-muted);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  transition: all 0.25s;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 0.45rem 0.85rem;
-  border-radius: 8px;
-  white-space: nowrap;
+  line-height: 1.8;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-.nav-link:hover { color: white; background: rgba(255,255,255,0.04); }
-.nav-link.active { color: white; background: var(--primary); }
-
-.nav-logout {
-  background: rgba(244,63,94,0.08);
-  color: #f43f5e;
-  padding: 0.4rem 0.75rem;
-  font-size: 0.75rem;
-  border-radius: 8px;
+.enter-btn {
+  background: white;
+  color: black;
   border: none;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
+  padding: 18px 40px;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  display: inline-flex;
   align-items: center;
-  gap: 5px;
-  transition: all 0.25s;
-  white-space: nowrap;
+  gap: 15px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.nav-logout:hover { background: rgba(244,63,94,0.15); }
+.enter-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(255, 255, 255, 0.1);
+  background: var(--primary);
+  color: white;
+}
+
+.landing-footer {
+  margin-top: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--success);
+  animation: blink 2s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+/* Background Blur Circles */
+.bg-blur-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: 1;
+}
+
+.circle-1 {
+  width: 400px;
+  height: 400px;
+  background: rgba(99, 102, 241, 0.1);
+  top: -100px;
+  left: -100px;
+}
+
+.circle-2 {
+  width: 500px;
+  height: 500px;
+  background: rgba(6, 182, 212, 0.08);
+  bottom: -150px;
+  right: -150px;
+}
+
+@media (max-width: 640px) {
+  .landing-title { font-size: 2.5rem; }
+  .landing-subtitle { font-size: 1rem; }
+  .feature-badges { flex-direction: column; align-items: center; }
+}
 
 /* ========== AUTH PAGES ========== */
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 85vh;
+  min-height: 100vh;
   padding: 1rem;
 }
 
@@ -223,6 +483,13 @@ select.premium-input {
   max-width: 1060px;
   margin: 0 auto;
   padding: 1.25rem 1.5rem;
+}
+
+.page-content-full {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* ========== SCANNER GRID ========== */
