@@ -13,6 +13,7 @@ const Verify = ({ hotel, token }) => {
   const [mode, setMode] = useState('face'); // 'face' or 'qr'
   const isVerifyingRef = useRef(false);
   const faceAttemptsRef = useRef(0);
+  const [showEnrollMsg, setShowEnrollMsg] = useState(false);
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -174,6 +175,9 @@ const Verify = ({ hotel, token }) => {
         
         setStatus({ type: 'success', msg: `Identity Verified: ${bookingData.guest_name}` });
         
+        setShowEnrollMsg(true);
+        setTimeout(() => setShowEnrollMsg(false), 3000);
+
         setMode('face');
         setLoading(true);
         setStatus({ type: 'loading', msg: 'Success! Now look at the camera...' });
@@ -295,6 +299,26 @@ const Verify = ({ hotel, token }) => {
               >
                 PROCEED TO ROOM
               </button>
+            </div>
+          )}
+
+          {/* QR Success / Enroll Popup */}
+          {showEnrollMsg && (
+            <div className="result-overlay-premium animate-in fade-in zoom-in duration-300">
+               <div className="success-icon-wrapper bg-green-500/20 p-6 rounded-full mb-6">
+                 <ScanFace size={80} className="text-green-500" />
+               </div>
+               <div className="text-center space-y-4">
+                 <h2 className="text-green-500 font-black tracking-[0.2em]">SUCCESS!</h2>
+                 <p className="text-2xl font-bold text-white max-w-xs mx-auto leading-tight">
+                    Now we need to take a face print for your room access.
+                 </p>
+                 <div className="flex justify-center gap-2 mt-8">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+                 </div>
+               </div>
             </div>
           )}
 
